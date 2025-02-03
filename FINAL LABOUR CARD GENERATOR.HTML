@@ -1,0 +1,279 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Registration Card</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2dd74;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            padding: 20px;
+        }
+        .form-container, .card-container {
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 20px;
+        }
+        .form-container input, .form-container button, .form-container label {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 14px;
+            width: 100%;
+            max-width: 300px;
+        }
+        .form-container input[type="file"] {
+            width: auto;
+        }
+        .card-container {
+            display: flex;
+            gap: 0.5cm;
+        }
+        .card {
+            width: 8.56cm;
+            height: 5.4cm;
+            border: 2px solid #000;
+            padding: 0.3cm;
+            background: rgb(255, 255, 255);
+            border-radius: 10px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            box-sizing: border-box;
+            font-size: 0.75em;
+        }
+        .header {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1em;
+            color: red;
+            word-wrap: break-word;
+        }
+        .sub-header {
+            text-align: center;
+            font-size: 0.8em;
+            color: black;
+            margin-bottom: 5px;
+            word-wrap: break-word;
+        }
+        .logo {
+            position: absolute;
+            top: 0.1cm;
+            left: 0.1cm;
+            width: 0.8cm;
+            height: 1.0cm;
+        }
+        .info-table {
+            width: 100%;
+            font-size: 0.7em;
+            word-wrap: break-word;
+        }
+        .info-table td {
+            padding: 0.1cm;
+        }
+        .highlight {
+            font-weight: bold;
+            color: rgb(51, 0, 255);
+        }
+        .blue-text {
+            color: blue;
+            font-weight: bold;
+        }
+        .status {
+            font-size: 0.8em;
+            text-align: center;
+            font-weight: bold;
+            background: #0bef0b;
+            padding: 3px;
+            margin-top: 5px;
+            word-wrap: break-word;
+        }
+        .registration-info {
+            font-size: 0.8em;
+            text-align: center;
+            margin-top: 5px;
+            word-wrap: break-word;
+        }
+        .footer {
+            font-size: 0.6em;
+            text-align: left;
+            font-weight: bold;
+            word-wrap: break-word;
+        }
+        .profile-pic {
+            position: absolute;
+            top: 1.5cm;
+            right: 0.3cm;
+            width: 1.8cm;
+            height: 1.8cm;
+            border: 1px solid #000;
+        }
+        .qr-code {
+            display: block;
+            margin: 5px auto;
+            width: 1.8cm;
+            height: 1.8cm;
+        }
+        .green-text {
+            color: green;
+        }
+        .colorful-text {
+            color: #00da00;
+            font-weight: bold;
+        }
+
+        /* Updated Print Styles */
+        @media print {
+            .form-container {
+                display: none;
+            }
+            .card-container {
+                display: block;
+                position: absolute; /* Position the container at the top */
+                top: 0; /* Align it at the top of the page */
+                left: 50%; /* Center it horizontally */
+                transform: translateX(-50%); /* Adjust the container to be centered */
+                width: 100%; /* Make sure it uses the full width of the page */
+            }
+            .card {
+                width: 8.56cm;
+                height: 5.4cm;
+                font-size: 0.75em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Form to Enter Applicant Details -->
+    <div class="form-container">
+        <h3>Enter Applicant Details</h3> 
+        <p> (consider saving applicant photo and jk govt. logo fetched from  "<a href="https://upload.wikimedia.org/wikipedia/commons/a/af/Seal_of_Jammu_and_Kashmir_color.png" target="_blank">JK GOVT. LOGO</a>" and save that)</p>
+        <label for="name">Name:</label>
+        <input type="text" id="name-input" placeholder="Enter Name">
+        
+        <label for="parentage">Parentage:</label>
+        <input type="text" id="parentage-input" placeholder="Enter Parentage">
+        
+        <label for="address">Address:</label>
+        <input type="text" id="address-input" placeholder="Enter Address">
+        
+        <label for="contact">Contact No:</label>
+        <input type="text" id="contact-input" placeholder="Enter Contact No">
+        
+        <label for="date">Date of Registration:</label>
+        <input type="text" id="date-input" placeholder="Enter Registration Date">
+        
+        <label for="reg-number">Registration Number:</label>
+        <input type="text" id="reg-number-input" placeholder="Enter Registration Number">
+        
+        <label for="profile-pic">Upload Profile Picture:</label>
+        <input type="file" id="profile-pic-input" accept="image/*">
+        
+        <label for="logo">Upload Logo:</label>
+        <input type="file" id="logo-input" accept="image/*">
+        
+        <button onclick="updateCard()">Update Card</button>
+    </div>
+
+    <!-- Card Display Section -->
+    <div class="card-container">
+        <!-- FRONT SIDE -->
+        <div class="card">
+            <img id="logo-img" src="https://upload.wikimedia.org/wikipedia/commons/a/af/Seal_of_Jammu_and_Kashmir_color.png" alt="JK Govt Logo" class="logo">
+            <div class="header">Building and Other Construction Workers Information</div>
+            <div class="sub-header">Government of Jammu &amp; Kashmir</div>
+
+            <img id="profile-img" src="" alt="Profile Picture" class="profile-pic">
+
+            <table class="info-table">
+                <tbody>
+                    <tr>
+                        <td><strong>NAME</strong></td>
+                        <td class="highlight" id="name-card">ABDUL RASHID SHAH</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PARENTAGE</strong></td>
+                        <td class="highlight" id="parentage-card">GASHI SHAH</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ADDRESS</strong></td>
+                        <td class="highlight" id="address-card">GADIKHAL AWANTIPORA</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CONTACT NO</strong></td>
+                        <td class="highlight" id="contact-card">9906919026</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div><strong>Payment Status :</strong></div>
+            <div class="status" id="payment-status">Payment Submitted Successfully</div>
+        </div>
+
+        <!-- BACK SIDE -->
+        <div class="card">
+            <div class="header">Application Status</div>
+            <div class="registration-info">
+                <span>Congratulations!</span> Your Registration request has been <br> 
+                successfully accepted on <span id="date-card" class="colorful-text">04/09/2020</span>.<br>
+                Your Registration Number is <span id="reg-number-card" class="colorful-text">JK0118010334</span>. <br>
+                Kindly keep it safe for future references.
+            </div>
+
+            <img id="qrCode" class="qr-code" src="" alt="QR Code">
+
+            <div class="footer">
+                <span class="green-text">KHIDMAT CENTRE AWANTIPORA</span><br>
+                <span id="footer-username"></span><br>
+                <span id="footer-password"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateCard() {
+            // Get values from the form
+            const name = document.getElementById("name-input").value;
+            const parentage = document.getElementById("parentage-input").value;
+            const address = document.getElementById("address-input").value;
+            const contact = document.getElementById("contact-input").value;
+            const regNumber = document.getElementById("reg-number-input").value;
+            const date = document.getElementById("date-input").value;
+
+            // Update card content
+            document.getElementById("name-card").textContent = name;
+            document.getElementById("parentage-card").textContent = parentage;
+            document.getElementById("address-card").textContent = address;
+            document.getElementById("contact-card").textContent = contact;
+            document.getElementById("reg-number-card").textContent = regNumber;
+            document.getElementById("date-card").textContent = date;
+
+            // Update Profile Picture
+            const profilePicInput = document.getElementById("profile-pic-input");
+            const profilePicURL = URL.createObjectURL(profilePicInput.files[0]);
+            document.getElementById("profile-img").src = profilePicURL;
+
+            // Update Logo
+            const logoInput = document.getElementById("logo-input");
+            const logoURL = URL.createObjectURL(logoInput.files[0]);
+            document.getElementById("logo-img").src = logoURL;
+
+            // Generate QR code
+            const qrData = `Name: ${name}\nParentage: ${parentage}\nAddress: ${address}\nContact: ${contact}\nRegistration No: ${regNumber}\nAccepted Date: ${date}`;
+            const qrCode = document.getElementById("qrCode");
+            qrCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrData)}`;
+
+            // Set Footer Username and Password
+            document.getElementById("footer-username").textContent = `Username: ${contact}`;
+            document.getElementById("footer-password").textContent = `Password: ${name.split(" ")[0]}@123`;
+        }
+    </script>
+
+    <button onclick="window.print()">Print</button>
+
+</body>
+</html>
